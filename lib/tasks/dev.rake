@@ -21,6 +21,13 @@ task sample_data: :environment do
     )
   end
 
+  User.create(
+    email: "alice@example.com",
+    password: "password",
+    username: "alice",
+    private: [true, false].sample,
+  )
+
   users = User.all
 
   users.each do |first_user|
