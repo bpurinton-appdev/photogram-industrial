@@ -1,0 +1,33 @@
+ 
+<div class="row mb-3">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <%# <img src="..." class="card-img-top" alt="..."> %>
+      <%= image_tag photo.image, class: "card-img-top" %>
+      <div class="card-body">
+        <h5 class="card-title"><%= photo.owner.username %></h5>
+        <p class="card-text"><%= photo.caption %></p>
+      </div>
+
+      <ul class="list-group list-group-flush">
+        <% photo.comments.each do |comment| %>
+          <li class="list-group-item">
+            <div class="media">
+              <img src="..." class="mr-3" alt="...">
+              <div class="media-body">
+                <h5 class="mt-0"><%= comment.author.username %></h5>
+                <p><%= comment.body %></p>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="card-body">
+        <%= render "comments/form", comment: Comment.new(photo_id: photo.id) %>
+        <%# <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a> %>
+      </div>
+    </div>
+  </div>
+</div>
