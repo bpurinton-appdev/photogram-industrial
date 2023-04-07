@@ -63,7 +63,7 @@ describe "The /users/edit page" do
   end
 end
 
-describe "The user details page" do
+describe "The /[USERNAME] user details page" do
   before do
     sign_in_user if user_model_exists?
   end
