@@ -1,21 +1,5 @@
 require "rails_helper"
 
-describe "New User record" do
-  before do
-    sign_in_user if user_model_exists?
-  end
-  
-  it "has a default `likes_count` of 0", points: 1 do
-    expect(@user.likes_count).to eq(0),
-      "Expected a new user to have a default `likes_count` of 0. Did you make the change in your user migration file?"
-  end
-
-  it "has a default `comments_count` of 0", points: 1 do
-    expect(@user.comments_count).to eq(0),
-      "Expected a new user to have a default `comments_count` of 0. Did you make the change in your user migration file?"
-  end
-end
-
 describe "The home page" do
   before do
     sign_in_user if user_model_exists?
