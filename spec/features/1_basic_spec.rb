@@ -91,12 +91,22 @@ describe "The /[USERNAME] user details page" do
   end
 
   it "shows the photos on bootstrap cards", points: 1 do
-    Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
+    photo = Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
 
     visit "/#{@user.username}"
 
     expect(page).to have_selector("div[class='card']"),
-      "Expected /[USERNAME] to have have <div class='card'> elements to display the photos."
+      "Expected /[USERNAME] to have <div class='card'> elements to display the photos."
+  end
+
+  it "shows the comments under the photos on the bootstrap cards", points: 1 do
+    photo = Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
+    comment = Comment.create(body: "body", author_id: @user.id, photo_id: photo.id)
+
+    visit "/#{@user.username}"
+
+    expect(page).to have_selector("div[class='card'] ul[class^='list-group']", text: comment.body),
+      "Expected /[USERNAME] to have <ul class='list-group...'> bootstrap list elements under the photos to display comments."
   end
 end
 
