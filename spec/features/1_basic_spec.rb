@@ -87,7 +87,7 @@ describe "The /[USERNAME] user details page" do
     visit "/#{@user.username}"
 
     expect(page).to have_selector("a[href='/#{@user.username}/liked'][class='nav-link']", text: "Liked Photos"),
-    "Expected /[USERNAME] to have a link to 'Liked Photos' with class='nav-link' that goes to /[USERNAME]/liked."
+      "Expected /[USERNAME] to have a link to 'Liked Photos' with class='nav-link' that goes to /[USERNAME]/liked."
   end
 
   it "shows the photos on bootstrap cards", points: 1 do
