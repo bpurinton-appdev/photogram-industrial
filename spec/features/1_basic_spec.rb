@@ -109,23 +109,32 @@ describe "The /[USERNAME] user details page" do
       "Expected /[USERNAME] to have <ul class='list-group...'> bootstrap list elements under the photos to display comments."
   end
 
+  it "has a bootstrap styled Create Comment button", points: 1 do
+    photo = Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
+
+    visit "/#{@user.username}"
+
+    expect(page).to have_selector("input[class^='btn']", text: "Create Comment"),
+      "Expected photo card to have <input class='btn...'> bootstrap styled 'Create Comment' button."
+  end
+
   it "allows a signed in user to add a comment", points: 1 do
     photo = Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
 
     visit "/#{@user.username}"
 
-    old_comments_count = Comments.count
+    old_comments_count = Comment.count
 
     fill_in "Body", with: "New comment"
-    click_button /Create Comment/i
+    click_button "Create comment"
 
-    new_comments_count = Comments.count
+    new_comments_count = Comment.count
 
-    expect(new_comments_count).to_be > old_comments_count,
+    expect(old_comments_count).to be < new_comments_count,
       "Expected to successfully create a new comment with the 'Body' comment field on a photo."
   end
 
-  <input type="submit" name="commit" value="Create Comment" class="btn btn-outline-secondary btn-block" data-disable-with="Create Comment">
+  # <input type="submit" name="commit" value="Create Comment" class="btn btn-outline-secondary btn-block" data-disable-with="Create Comment">
 
 end
 
