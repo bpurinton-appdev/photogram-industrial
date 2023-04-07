@@ -1,5 +1,19 @@
 require "rails_helper"
 
+describe "New User record" do
+  let(:user) { User.create(username: "alice", email: "alice@example.com", password: "password") }
+
+  it "has a default `likes_count` of 0", points: 1 do
+    expect(user.likes_count).to eq(0),
+      "Expected a new user to have a default `likes_count` of 0. Did you make the change in your user migration file?"
+  end
+
+  it "has a default `comments_count` of 0", points: 1 do
+    expect(user.comments_count).to eq(0),
+      "Expected a new user to have a default `comments_count` of 0. Did you make the change in your user migration file?"
+  end
+end
+
 describe "User authentication with the Devise gem" do
   let(:user) { User.create(username: "alice", email: "alice@example.com", password: "password") }
 
