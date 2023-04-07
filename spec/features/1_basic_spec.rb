@@ -79,7 +79,7 @@ describe "The /[USERNAME] user details page" do
 
     visit "/#{@user.username}"
 
-    expect(page).to have_selector("div[class='card']"),
+    expect(page).to have_selector("div[class='card']", text: photo.caption),
       "Expected /[USERNAME] to have a <div class='card'> element with the user's photo inside."
   end
 
