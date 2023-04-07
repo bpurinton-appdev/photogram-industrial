@@ -50,36 +50,55 @@ describe "The home page" do
   end
 end
 
-# describe "The User details page" do
-#   let(:user) { User.create(username: "user", email: "user@example.com", password: "password", private: false) }
-#   let(:photo) { Photo.create(image: "image_url", caption: "caption", owner_id: user.id) }
+describe "The /users/edit page" do
+  before do
+    sign_in_user if user_model_exists?
+  end
 
-#   before do
-#     sign_in_user if user_model_exists?
-#   end
+  it "can be visited", points: 1 do
+    visit "/users/edit"
 
-#   it "can be visited", points: 1 do
-#     visit "/#{user.username}"
+    expect(page.status_code).to be(200),
+      "Expected to visit /users/edit successfully."
+  end
+end
 
-#     p user
+describe "The user details page" do
+  before do
+    sign_in_user if user_model_exists?
+  end
 
-#     expect(page.status_code).to be(200),
-#       "Expected to visit /[USERNAME] successfully."
-#   end
+  it "can be visited", points: 1 do
+    visit "/#{@user.username}"
+    current_url = page.current_path
 
-#   it "shows the photos on bootstrap cards", points: 2 do
-#     visit "/#{user.username}"
+    expect(current_url).to eq("/#{@user.username}"),
+      "Expected to visit the user details page at /[USERNAME] successfully."
+  end
 
-#     p photo
-#     p user
+  it "has a link to Posts", points: 1 do
+    visit "/#{@user.username}"
 
-#     p page.body
+    expect(page).to have_selector("a[href='/#{@user.username}'][class='nav-link']", text: "Posts"),
+      "Expected /[USERNAME] to have a link to 'Posts' with class='nav-link' that goes to /[USERNAME]."
+  end
 
-#     expect(page).to have_selector("div[class='card']"),
-#       "Expected /[USERNAME] to have have a <div class='card'> elements to display the photos."
-#   end
-# end
+  it "has a link to Liked Photos", points: 1 do
+    visit "/#{@user.username}"
 
+    expect(page).to have_selector("a[href='/#{@user.username}/liked'][class='nav-link']", text: "Liked Photos"),
+    "Expected /[USERNAME] to have a link to 'Liked Photos' with class='nav-link' that goes to /[USERNAME]/liked."
+  end
+
+  it "shows the photos on bootstrap cards", points: 1 do
+    Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
+
+    visit "/#{@user.username}"
+
+    expect(page).to have_selector("div[class='card']"),
+      "Expected /[USERNAME] to have have <div class='card'> elements to display the photos."
+  end
+end
 
 describe "User authentication with the Devise gem" do
   let(:user) { User.create(username: "alice", email: "alice@example.com", password: "password") }
@@ -105,7 +124,8 @@ describe "User authentication with the Devise gem" do
 end
 
 def sign_in_user
-  @user = User.create(username: "alice", email: "alice@example.com", password: "password")
+  new_user = "alice_#{rand(100)}"
+  @user = User.create(username: new_user, email: "#{new_user}@example.com", password: "password")
   visit new_user_session_path
 
   fill_in "Email", with: @user.email
