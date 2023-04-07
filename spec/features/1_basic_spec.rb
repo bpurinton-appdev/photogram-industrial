@@ -74,13 +74,13 @@ describe "The /[USERNAME] user details page" do
       "Expected /[USERNAME] to have a link to 'Liked Photos' with class='nav-link' that goes to /[USERNAME]/liked."
   end
 
-  it "shows the photos on bootstrap cards", points: 1 do
+  it "displays each of the user's photos inside a bootstrap card", points: 1 do
     photo = Photo.create(image: "https://robohash.org/#{rand(9999)}", caption: "caption", owner_id: @user.id)
 
     visit "/#{@user.username}"
 
     expect(page).to have_selector("div[class='card']"),
-      "Expected /[USERNAME] to have <div class='card'> elements to display the photos."
+      "Expected /[USERNAME] to have a <div class='card'> element with the user's photo inside."
   end
 
   it "shows the comments under the photos on the bootstrap cards", points: 1 do
